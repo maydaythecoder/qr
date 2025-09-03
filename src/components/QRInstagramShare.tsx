@@ -124,17 +124,12 @@ export default function QRCodeShare({
    */
   const shareToLinkedIn = () => {
     try {
-      const canvasElement = canvasRef.current?.querySelector('canvas');
-      if (!canvasElement) {
-        throw new Error('QR code canvas not found');
-      }
-
-      // For LinkedIn, we'll share the URL and text, then suggest downloading the QR code
-      const linkedInUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}&summary=${encodeURIComponent(text)}`;
+      // LinkedIn only reliably supports the 'url' param for offsite sharing
+      const linkedInUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`;
       window.open(linkedInUrl, '_blank');
       
-      // Show a message about downloading the QR code
-      setError('LinkedIn opened! Download the QR code image to include it in your post.');
+      // Optional hint for attaching the image to posts manually
+      setError('LinkedIn opened. To include the QR image, download it and attach to your post.');
     } catch (err) {
       setError('Failed to open LinkedIn');
       console.error('LinkedIn share error:', err);

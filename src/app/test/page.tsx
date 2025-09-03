@@ -1,5 +1,22 @@
+import type { Metadata } from 'next';
 import QRCodeShare from '@/components/QRInstagramShare';
 import ShareLinks from '@/components/ShareLinks';
+
+export const metadata: Metadata = {
+  title: 'QR Code Sharing Test Page',
+  description: 'Test the multi-platform QR code sharing functionality.',
+  openGraph: {
+    title: 'QR Code Sharing Test Page',
+    description: 'Test the multi-platform QR code sharing functionality.',
+    url: '/test',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'QR Code Sharing Test Page',
+    description: 'Test the multi-platform QR code sharing functionality.',
+  },
+};
 
 export default function TestPage() {
   return (
