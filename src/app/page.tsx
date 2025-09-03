@@ -1,4 +1,4 @@
-import QRInstagramShare from '@/components/QRInstagramShare';
+import QRCodeShare from '@/components/QRInstagramShare';
 
 export default function Home() {
   return (
@@ -7,10 +7,10 @@ export default function Home() {
         {/* Header */}
         <header className="text-center py-8">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            QR Code Generator & Instagram Share
+            QR Code Generator & Multi-Platform Share
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Generate QR codes from URLs and share them directly to Instagram using the Web Share API. 
+            Generate QR codes from URLs and share them directly to Instagram, LinkedIn, Snapchat, or download. 
             Works seamlessly on mobile devices with fallback to download on desktop.
           </p>
         </header>
@@ -18,7 +18,7 @@ export default function Home() {
         {/* Main Content */}
         <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 py-8">
           {/* Example 1: Basic URL */}
-          <QRInstagramShare
+          <QRCodeShare
             url="https://nextjs.org"
             title="Next.js Website"
             text="Check out the amazing Next.js framework!"
@@ -26,7 +26,7 @@ export default function Home() {
           />
 
           {/* Example 2: Social Media Profile */}
-          <QRInstagramShare
+          <QRCodeShare
             url="https://instagram.com/yourprofile"
             title="Instagram Profile"
             text="Follow me on Instagram!"
@@ -34,7 +34,7 @@ export default function Home() {
           />
 
           {/* Example 3: Business Website */}
-          <QRInstagramShare
+          <QRCodeShare
             url="https://yourbusiness.com"
             title="Business Website"
             text="Visit our website for more information"
@@ -54,9 +54,9 @@ export default function Home() {
                   <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h3 className="font-semibold text-gray-900 mb-2">Web Share API</h3>
+              <h3 className="font-semibold text-gray-900 mb-2">Multi-Platform Sharing</h3>
               <p className="text-gray-600 text-sm">
-                Uses native sharing capabilities on mobile devices for seamless Instagram integration.
+                Share to Instagram, LinkedIn, Snapchat, or download directly from the app.
               </p>
             </div>
 
@@ -98,8 +98,8 @@ export default function Home() {
                 to generate high-quality QR codes with configurable error correction levels.
               </p>
               <p>
-                <strong>Sharing Method:</strong> Implements the Web Share API for native sharing on mobile devices, 
-                with automatic fallback to download functionality on desktop browsers.
+                <strong>Sharing Method:</strong> Implements Web Share API for native sharing on mobile devices, 
+                LinkedIn sharing for desktop, and automatic download functionality for all platforms.
               </p>
               <p>
                 <strong>Security:</strong> All processing happens client-side with no server dependencies. 

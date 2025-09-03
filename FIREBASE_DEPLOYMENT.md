@@ -1,9 +1,11 @@
 # Firebase Deployment Guide
 
 ## Overview
+
 This guide explains how to deploy the QR Code Generator & Instagram Share application to Firebase Hosting.
 
 ## Prerequisites
+
 - Firebase CLI installed (`npm install -g firebase-tools`)
 - Firebase project created and configured
 - Firebase project ID: `qrcode-d276d`
@@ -11,6 +13,7 @@ This guide explains how to deploy the QR Code Generator & Instagram Share applic
 ## Configuration Files
 
 ### firebase.json
+
 ```json
 {
   "hosting": {
@@ -31,6 +34,7 @@ This guide explains how to deploy the QR Code Generator & Instagram Share applic
 ```
 
 ### next.config.ts
+
 ```typescript
 import type { NextConfig } from "next";
 
@@ -48,27 +52,32 @@ export default nextConfig;
 ## Deployment Steps
 
 ### 1. Build the Application
+
 ```bash
 npm run build
 ```
+
 This creates a static export in the `out` directory.
 
 ### 2. Deploy to Firebase
+
 ```bash
 firebase deploy
 ```
 
 ### 3. One-Command Deployment
+
 ```bash
 npm run deploy
 ```
+
 This runs both build and deploy in sequence.
 
 ## Deployment URLs
 
-- **Main Site**: https://qrcode-d276d.web.app
-- **Test Page**: https://qrcode-d276d.web.app/test/
-- **Firebase Console**: https://console.firebase.google.com/project/qrcode-d276d/overview
+- **Main Site**: <https://qrcode-d276d.web.app>
+- **Test Page**: <https://qrcode-d276d.web.app/test/>
+- **Firebase Console**: <https://console.firebase.google.com/project/qrcode-d276d/overview>
 
 ## Static Export Configuration
 
@@ -91,13 +100,15 @@ The application is configured for static export to work with Firebase Hosting:
 ## Testing the Deployed Application
 
 ### Mobile Testing
-1. Open https://qrcode-d276d.web.app on your mobile device
+
+1. Open <https://qrcode-d276d.web.app> on your mobile device
 2. Tap "Share to Instagram" on any QR code
 3. Verify Instagram appears in the native share sheet
 4. Test the sharing functionality
 
 ### Desktop Testing
-1. Open https://qrcode-d276d.web.app in a desktop browser
+
+1. Open <https://qrcode-d276d.web.app> in a desktop browser
 2. Tap "Share to Instagram" on any QR code
 3. Verify the image downloads automatically
 4. Check the downloaded file quality
@@ -105,16 +116,19 @@ The application is configured for static export to work with Firebase Hosting:
 ## Troubleshooting
 
 ### Build Issues
+
 - Ensure all dependencies are installed: `npm install`
 - Clear cache if needed: `rm -rf .next out`
 - Check TypeScript errors: `npm run build`
 
 ### Deployment Issues
+
 - Verify Firebase CLI is installed: `firebase --version`
 - Check Firebase project configuration: `firebase projects:list`
 - Ensure you're logged in: `firebase login`
 
 ### Performance Optimization
+
 - The static export is optimized for fast loading
 - All assets are minified and compressed
 - CDN distribution via Firebase Hosting
@@ -122,6 +136,7 @@ The application is configured for static export to work with Firebase Hosting:
 ## Continuous Deployment
 
 For automatic deployments, consider setting up:
+
 - GitHub Actions with Firebase deployment
 - Vercel deployment (alternative to Firebase)
 - Netlify deployment (alternative to Firebase)
