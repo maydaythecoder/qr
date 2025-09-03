@@ -20,17 +20,18 @@ export default function Home() {
         {/* Main Content */}
         <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 py-8">
           {/* Example 1: Basic URL */}
-          <div className="mt-6 flex justify-center">
+          <div className="mt-6 flex justify-center items-center">
             <UniversalQR title="Share this page" text="Share this page across social platforms" />
           </div>
+        </main>
+        <div className=" h-12 mt-6 flex justify-center items-center">
           <Link 
             href="/test" 
             className="inline-block px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
           >
             View Test Page
           </Link>
-        </main>
-
+          </div>
         {/* Features Section */}
         <section className="py-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
