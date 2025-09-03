@@ -1,4 +1,5 @@
 import QRCodeShare from '@/components/QRInstagramShare';
+import ShareLinks from '@/components/ShareLinks';
 
 export default function TestPage() {
   return (
@@ -11,6 +12,9 @@ export default function TestPage() {
           <p className="text-gray-600">
             Test the multi-platform QR code sharing functionality with different URL types and use cases.
           </p>
+          <div className="mt-4">
+            <ShareLinks text="Check out this test page" hashtags={["qr","sharing","nextjs"]} />
+          </div>
         </header>
 
         {/* Social Media Platforms */}
