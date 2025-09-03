@@ -9,7 +9,7 @@
     "lint": "eslint",
     "export": "next build",
     "deploy": "npm run export && firebase deploy",
-    "ahem": "npm run build | cat && irebase deploy --non-interactive | cat"
+    "ahem": "npm run build | cat && firebase deploy --non-interactive | cat"
   },
   "dependencies": {
     "next": "15.5.2",
