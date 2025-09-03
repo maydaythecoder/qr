@@ -1,4 +1,6 @@
-import QRCodeShare from '@/components/QRInstagramShare';
+// import QRCodeShare from '@/components/QRInstagramShare';
+import UniversalQR from '@/components/UniversalQR';
+import Link from 'next/link';
 
 export default function Home() {
   return (
@@ -18,28 +20,15 @@ export default function Home() {
         {/* Main Content */}
         <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 py-8">
           {/* Example 1: Basic URL */}
-          <QRCodeShare
-            url="https://nextjs.org"
-            title="Next.js Website"
-            text="Check out the amazing Next.js framework!"
-            size={200}
-          />
-
-          {/* Example 2: Social Media Profile */}
-          <QRCodeShare
-            url="https://instagram.com/yourprofile"
-            title="Instagram Profile"
-            text="Follow me on Instagram!"
-            size={200}
-          />
-
-          {/* Example 3: Business Website */}
-          <QRCodeShare
-            url="https://yourbusiness.com"
-            title="Business Website"
-            text="Visit our website for more information"
-            size={200}
-          />
+          <div className="mt-6 flex justify-center">
+            <UniversalQR title="Share this page" text="Share this page across social platforms" />
+          </div>
+          <Link 
+            href="/test" 
+            className="inline-block px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+          >
+            View Test Page
+          </Link>
         </main>
 
         {/* Features Section */}
