@@ -9,8 +9,10 @@ This file provides guidance to WARP (warp.dev) when working with code in this re
 ```bash
 npm run dev          # Start development server at http://localhost:3000
 npm run build        # Build for production
+npm run deploy       # Build + deploy to Firebase Hosting
 npm run start        # Start production server
 npm run lint         # Run ESLint
+npm run ahem         # Build + deploy to Firebase Hosting if it doesnt work the first time
 ```
 
 ### TypeScript
@@ -65,6 +67,24 @@ src/app/           # App Router pages and layouts
 public/            # Static assets served from root
 ├── *.svg          # Icon assets (next, vercel, file, globe, window)
 ```
+
+## Deployment
+
+```bash
+npm run build
+firebase deploy --non-interactive
+```
+
+Set environment before build for absolute OG URLs:
+
+```bash
+export NEXT_PUBLIC_SITE_URL="https://qrcode-d276d.web.app"
+```
+
+Key static export notes:
+
+- `next.config.ts` uses `output: 'export'`
+- `/test/opengraph-image` declares `export const dynamic = 'force-static'`
 
 ### Development Notes
 

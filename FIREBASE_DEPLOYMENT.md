@@ -49,6 +49,16 @@ const nextConfig: NextConfig = {
 export default nextConfig;
 ```
 
+### Environment
+
+Set a public base URL for absolute Open Graph URLs (used by LinkedIn/Twitter cards):
+
+```bash
+export NEXT_PUBLIC_SITE_URL="https://qrcode-d276d.web.app"
+```
+
+This is consumed by `metadataBase` in `src/app/layout.tsx`.
+
 ## Deployment Steps
 
 ### 1. Build the Application
@@ -72,6 +82,8 @@ npm run deploy
 ```
 
 This runs both build and deploy in sequence.
+
+> Note: The `/test/opengraph-image` route is marked `dynamic = 'force-static'` to support static export.
 
 ## Deployment URLs
 

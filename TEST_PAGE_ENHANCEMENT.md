@@ -16,6 +16,7 @@ Each example includes:
 
 #### Examples
 
+- **Universal (current page)**: `UniversalQR` with share options (Instagram, LinkedIn, Twitter, Snapchat, Download)
 - **Instagram Profile**: Purple/pink gradient icon
 - **LinkedIn Profile**: Blue icon  
 - **Snapchat**: Yellow icon
@@ -81,6 +82,7 @@ The enhanced test page is now live at:
 
 - Test Instagram sharing on mobile devices
 - Verify LinkedIn sharing opens correctly
+- Test Twitter sharing intent
 - Test Snapchat sharing functionality
 
 ### Business Use Cases

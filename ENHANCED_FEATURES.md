@@ -9,7 +9,8 @@ Your QR code application has been successfully enhanced with support for multipl
 #### 1. **Multi-Platform Sharing Menu**
 
 - **Instagram & More**: Uses Web Share API for native sharing on mobile devices
-- **LinkedIn**: Opens LinkedIn sharing dialog with URL and text
+- **LinkedIn**: Opens LinkedIn offsite share with the page URL; copies text to clipboard; downloads PNG for attachment
+- **Twitter**: Opens tweet intent with text + url
 - **Snapchat**: Uses Web Share API on mobile, download fallback on desktop
 - **Download**: Direct download with timestamped filename
 
@@ -35,10 +36,28 @@ Your QR code application has been successfully enhanced with support for multipl
 
 ```typescript
 const shareToLinkedIn = () => {
-  const linkedInUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}&title=${encodeURIComponent(title)}&summary=${encodeURIComponent(text)}`;
+  const linkedInUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`;
   window.open(linkedInUrl, '_blank');
-  setError('LinkedIn opened! Download the QR code image to include it in your post.');
+  // Copy suggested text and download PNG for attachment
 };
+``` txt
+#### Twitter Sharing
+
+```typescript
+const shareToTwitter = () => {
+  const params = new URLSearchParams();
+  params.set('url', url);
+  if (text || title) params.set('text', text || title);
+  window.open(`https://twitter.com/intent/tweet?${params.toString()}`, '_blank');
+}
+```
+
+#### UniversalQR Component
+
+Single QR block that shares the current page URL via `QRInstagramShare`:
+
+```tsx
+<UniversalQR title="Share this page" text="Share across social platforms" />
 ```
 
 #### Snapchat Sharing
@@ -112,7 +131,7 @@ The enhanced application is now live at:
 
 Potential improvements for future versions:
 
-- **Twitter/X Sharing**: Direct integration with Twitter API
+- **Custom OG Image per URL**: Render QR content in `/test/opengraph-image`
 - **Facebook Sharing**: Facebook sharing dialog
 - **Email Sharing**: Attach QR code to email
 - **Custom Branding**: Add logos to QR codes

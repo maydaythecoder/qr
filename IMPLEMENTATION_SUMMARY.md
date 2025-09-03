@@ -1,8 +1,8 @@
-# QR Code to Instagram Share - Implementation Summary
+# QR Sharing - Implementation Summary
 
 ## Overview
 
-Successfully implemented a Next.js application that generates QR codes from URLs and allows users to share them directly to Instagram using the Web Share API with fallback to download functionality.
+Implemented a Next.js application that generates QR codes from URLs and enables multi-platform sharing: Instagram/Snapchat via Web Share, LinkedIn via offsite share (with clipboard text and PNG auto-download), Twitter via tweet intent, plus direct save.
 
 ## Technical Implementation
 
@@ -15,6 +15,8 @@ Successfully implemented a Next.js application that generates QR codes from URLs
   - Uses `next-qrcode` library for client-side QR code generation
   - Implements Web Share API for native sharing on mobile devices
   - Provides automatic fallback to download on desktop browsers
+  - LinkedIn: opens offsite share with page URL; copies composed text to clipboard; auto-downloads PNG
+  - Twitter: opens tweet intent with `text` + `url`
   - Includes comprehensive error handling and loading states
   - Responsive design with Tailwind CSS
   - **Hydration-safe**: Uses client-side effects to detect Web Share API support
@@ -31,9 +33,18 @@ Successfully implemented a Next.js application that generates QR codes from URLs
 
 - **Purpose**: Comprehensive testing environment
 - **Features**:
+  - Unified `UniversalQR` for current page URL sharing
   - Six different URL types for testing various scenarios
   - Testing instructions for mobile and desktop
   - Different QR code sizes and configurations
+
+#### 4. UniversalQR (`src/components/UniversalQR.tsx`)
+
+- Wraps `QRInstagramShare` and binds `url` to `window.location.href` for a one-QR share block usable anywhere.
+
+#### 5. ShareLinks (`src/components/ShareLinks.tsx`)
+
+- Header links for LinkedIn/Twitter of the current page with optional `text` and `hashtags`.
 
 ### Technical Architecture
 
@@ -58,12 +69,12 @@ const { Canvas } = useQRCode();
 />
 ```
 
-#### Instagram Sharing Process
+#### Sharing Flows
 
-1. **Canvas to Blob**: Converts QR code canvas to PNG blob
-2. **File Creation**: Creates File object with `.igo` extension (iOS hint)
-3. **Web Share API**: Uses `navigator.share()` for native sharing
-4. **Fallback**: Downloads image if Web Share API unavailable
+1. **Web Share** (Instagram/Snapchat on mobile): converts canvas to blob → File → `navigator.share`
+2. **LinkedIn**: `https://www.linkedin.com/sharing/share-offsite/?url=<url>` + clipboard copy of `text + url` + PNG auto-download
+3. **Twitter**: `https://twitter.com/intent/tweet?text=<text>&url=<url>`
+4. **Download**: Canvas to data URL, trigger `<a download>`
 
 #### Security Features
 
@@ -71,6 +82,7 @@ const { Canvas } = useQRCode();
 - No server dependencies or API keys required
 - Uses secure Web Share API with user consent
 - No data persistence or tracking
+- External links use `rel="noopener noreferrer"`
 
 ### Browser Compatibility
 
@@ -133,12 +145,10 @@ const { Canvas } = useQRCode();
 - ✅ Production build optimized
 - ✅ Hydration errors resolved
 
-### Deployment Options
+### Deployment
 
-1. **Vercel** (Recommended): Automatic deployment from GitHub
-2. **Netlify**: Static site deployment
-3. **AWS Amplify**: Cloud deployment
-4. **Docker**: Containerized deployment
+Configured for static export and Firebase Hosting.
+Set `NEXT_PUBLIC_SITE_URL` for absolute OG URLs. OG image route at `/test/opengraph-image` (1200x627 PNG).
 
 ## Usage Examples
 

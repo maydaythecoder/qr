@@ -1,11 +1,14 @@
-# QR Code Generator & Instagram Share
+# QR Code Sharing (Instagram, LinkedIn, Twitter, Snapchat) + Save
 
-A Next.js application that generates QR codes from URLs and allows users to share them directly to Instagram using the Web Share API.
+A Next.js application that generates QR codes from URLs and lets users share them across Instagram (via Web Share), LinkedIn (URL share + clipboard text + downloadable image), Twitter (tweet intent), Snapchat (via Web Share), as well as save the QR as PNG.
 
 ## Features
 
 - **QR Code Generation**: Generate high-quality QR codes from any URL using the `next-qrcode` library
-- **Instagram Sharing**: Share QR codes directly to Instagram using the native Web Share API
+- **Instagram Sharing**: Share via the native Web Share API (mobile)
+- **LinkedIn Sharing**: Opens LinkedIn share with the page URL; auto-copies post text to clipboard and downloads PNG for attaching
+- **Twitter Sharing**: Opens tweet intent with `text` + `url`
+- **Snapchat Sharing**: Uses Web Share API on mobile, download fallback on desktop
 - **Smart Fallback**: Automatic download functionality for desktop browsers where Web Share API isn't available
 - **Mobile-First Design**: Optimized for mobile devices with responsive UI
 - **Error Handling**: Comprehensive error handling with user-friendly feedback
@@ -15,10 +18,11 @@ A Next.js application that generates QR codes from URLs and allows users to shar
 
 ### Architecture
 
-- **Frontend**: Next.js 14+ with App Router
+- **Frontend**: Next.js 15+ with App Router, static export
 - **QR Code Library**: `next-qrcode` for client-side QR code generation
-- **Sharing Method**: Web Share API with fallback to download
+- **Sharing Methods**: Web Share API with fallback to download, LinkedIn offsite share URL, Twitter intent
 - **Styling**: Tailwind CSS for responsive design
+- **Open Graph**: Dynamic OG image route for LinkedIn/Twitter card previews (`/test/opengraph-image`)
 
 ### Security Considerations
 
@@ -26,6 +30,7 @@ A Next.js application that generates QR codes from URLs and allows users to shar
 - No server dependencies or API keys required
 - Uses secure Web Share API with user consent
 - No data persistence or tracking
+- External share links use `rel="noopener noreferrer"`
 
 ## Installation
 
@@ -52,24 +57,43 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## Usage
 
-### Basic Component Usage
+### Components
+
+#### UniversalQR (single QR with all share options)
 
 ```tsx
-import QRInstagramShare from '@/components/QRInstagramShare';
+import UniversalQR from '@/components/UniversalQR';
 
-function MyPage() {
+export default function MyPage() {
   return (
-    <QRInstagramShare
-      url="https://example.com"
-      title="My Website"
-      text="Check out my website!"
-      size={200}
-    />
+    <UniversalQR title="Share this page" text="Share this page across social platforms" />
   );
 }
 ```
 
-### Component Props
+#### QRInstagramShare (low-level QR + menu)
+
+```tsx
+import QRInstagramShare from '@/components/QRInstagramShare';
+
+export default function MyPage() {
+  return (
+    <QRInstagramShare url="https://example.com" title="My Website" text="Check this out!" size={200} />
+  );
+}
+```
+
+#### ShareLinks (header share links for current page)
+
+```tsx
+import ShareLinks from '@/components/ShareLinks';
+
+export default function Header() {
+  return <ShareLinks text="Check out this page" hashtags={["qr","sharing","nextjs"]} />
+}
+```
+
+### QRInstagramShare Props
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
@@ -87,13 +111,12 @@ function MyPage() {
 2. Configurable error correction level (Medium by default)
 3. Optimized for mobile scanning with appropriate margins and scaling
 
-### Instagram Sharing Process
+### Sharing Behavior
 
-1. **Canvas to Image**: Converts the QR code canvas to a PNG blob
-2. **File Creation**: Creates a File object with `.igo` extension (hint for iOS Instagram)
-3. **Web Share API**: Uses `navigator.share()` to open native share sheet
-4. **User Selection**: User can choose Instagram from available sharing options
-5. **Fallback**: Downloads image if Web Share API is unavailable
+1. **Instagram/Snapchat (mobile)**: Web Share API with PNG file; otherwise fallback to download
+2. **LinkedIn**: Opens `https://www.linkedin.com/sharing/share-offsite/?url=<pageUrl>`; copies `text + url` to clipboard; downloads PNG for attaching
+3. **Twitter**: Opens `https://twitter.com/intent/tweet?text=<text>&url=<url>`
+4. **Download**: Direct PNG download with timestamped filename
 
 ### Browser Compatibility
 
@@ -144,9 +167,14 @@ src/
 ├── app/
 │   ├── layout.tsx
 │   ├── page.tsx
+│   ├── test/
+│   │   ├── page.tsx                 # Test page with UniversalQR and examples
+│   │   └── opengraph-image.tsx      # OG image route (1200x627 PNG)
 │   └── globals.css
 ├── components/
-│   └── QRInstagramShare.tsx
+│   ├── QRInstagramShare.tsx         # QR + share options
+│   ├── UniversalQR.tsx              # Single QR for current page with menu
+│   └── ShareLinks.tsx               # LinkedIn/Twitter header links
 └── ...
 ```
 
@@ -165,11 +193,13 @@ src/
 
 ## Deployment
 
-### Vercel (Recommended)
+### Firebase Hosting (Configured)
 
-1. Connect your GitHub repository to Vercel
-2. Deploy automatically on push to main branch
-3. Configure custom domain if needed
+1. `npm run build` (static export to `out/`)
+2. `firebase deploy`
+3. Live: `https://qrcode-d276d.web.app`
+
+Set `NEXT_PUBLIC_SITE_URL` to your public domain for absolute OG URLs.
 
 ### Other Platforms
 
