@@ -127,9 +127,45 @@ export default function QRCodeShare({
       // LinkedIn only reliably supports the 'url' param for offsite sharing
       const linkedInUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`;
       window.open(linkedInUrl, '_blank');
-      
-      // Optional hint for attaching the image to posts manually
-      setError('LinkedIn opened. To include the QR image, download it and attach to your post.');
+
+      // Try to copy suggested text (like Twitter template) to clipboard
+      const composedText = `${text || title || ''}${text || title ? ' ' : ''}${url}`.trim();
+      const tryClipboard = async () => {
+        try {
+          if (navigator.clipboard && composedText.length > 0) {
+            await navigator.clipboard.writeText(composedText);
+            return true;
+          }
+        } catch (e) {
+          // ignore clipboard errors
+        }
+        return false;
+      };
+
+      void tryClipboard().then((copied) => {
+        // Also download the QR PNG so the user can attach it to the post
+        const canvasElement = canvasRef.current?.querySelector('canvas');
+        if (canvasElement) {
+          const dataUrl = canvasElement.toDataURL('image/png');
+          const link = document.createElement('a');
+          link.href = dataUrl;
+          link.download = `qrcode-${Date.now()}.png`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          setError(
+            copied
+              ? 'LinkedIn opened. Text copied to clipboard and QR image downloaded.'
+              : 'LinkedIn opened. QR image downloaded. Paste your text manually if needed.'
+          );
+        } else {
+          setError(
+            copied
+              ? 'LinkedIn opened. Text copied to clipboard. Click Download to save the QR image.'
+              : 'LinkedIn opened. Click Download to save the QR image and paste your text.'
+          );
+        }
+      });
     } catch (err) {
       setError('Failed to open LinkedIn');
       console.error('LinkedIn share error:', err);

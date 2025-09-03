@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import QRCodeShare from '@/components/QRInstagramShare';
-import ShareLinks from '@/components/ShareLinks';
+// import ShareLinks from '@/components/ShareLinks';
 import UniversalQR from '@/components/UniversalQR';
 
 export const metadata: Metadata = {
@@ -11,11 +11,20 @@ export const metadata: Metadata = {
     description: 'Test the multi-platform QR code sharing functionality.',
     url: '/test',
     type: 'website',
+    images: [
+      {
+        url: '/test/opengraph-image',
+        width: 1200,
+        height: 627,
+        alt: 'QR Code Sharing Test Page',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'QR Code Sharing Test Page',
     description: 'Test the multi-platform QR code sharing functionality.',
+    images: ['/test/opengraph-image'],
   },
 };
 
@@ -30,9 +39,9 @@ export default function TestPage() {
           <p className="text-gray-600">
             Test the multi-platform QR code sharing functionality with different URL types and use cases.
           </p>
-          <div className="mt-4">
+          {/* <div className="mt-4">
             <ShareLinks text="Check out this test page" hashtags={["qr","sharing","nextjs"]} />
-          </div>
+          </div> */}
           <div className="mt-6 flex justify-center">
             <UniversalQR title="Share this page" text="Share this page across social platforms" />
           </div>
