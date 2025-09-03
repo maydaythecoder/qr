@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useQRCode } from 'next-qrcode';
 
 /**
@@ -35,6 +35,12 @@ export default function QRInstagramShare({
   const canvasRef = useRef<HTMLDivElement>(null);
   const [isSharing, setIsSharing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [hasWebShareAPI, setHasWebShareAPI] = useState<boolean | null>(null);
+
+  // Check for Web Share API support on client-side only
+  useEffect(() => {
+    setHasWebShareAPI('share' in navigator);
+  }, []);
 
   /**
    * Handles sharing the QR code to Instagram or other apps
@@ -79,7 +85,16 @@ export default function QRInstagramShare({
       }
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred';
-      setError(errorMessage);
+      
+      // Handle specific Web Share API errors
+      if (errorMessage.includes('Permission denied') || errorMessage.includes('NotAllowedError')) {
+        setError('Sharing was cancelled or not allowed. Try again or use the download option.');
+      } else if (errorMessage.includes('AbortError')) {
+        setError('Sharing was cancelled by the user.');
+      } else {
+        setError(errorMessage);
+      }
+      
       console.error('Share error:', err);
     } finally {
       setIsSharing(false);
@@ -180,7 +195,9 @@ export default function QRInstagramShare({
 
       {/* Instructions */}
       <div className="text-xs text-gray-600 text-center max-w-xs">
-        {typeof window !== 'undefined' && 'share' in navigator ? (
+        {hasWebShareAPI === null ? (
+          <p>Loading...</p>
+        ) : hasWebShareAPI ? (
           <p>Tap to share directly to Instagram or other apps</p>
         ) : (
           <p>Tap to download the QR code image</p>
