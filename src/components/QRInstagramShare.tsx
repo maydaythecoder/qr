@@ -137,6 +137,22 @@ export default function QRCodeShare({
   };
 
   /**
+   * Opens Twitter share intent
+   */
+  const shareToTwitter = () => {
+    try {
+      const params = new URLSearchParams();
+      params.set('url', url);
+      if (text || title) params.set('text', text || title);
+      const twitterUrl = `https://twitter.com/intent/tweet?${params.toString()}`;
+      window.open(twitterUrl, '_blank');
+    } catch (err) {
+      setError('Failed to open Twitter');
+      console.error('Twitter share error:', err);
+    }
+  };
+
+  /**
    * Opens Snapchat sharing (mobile only)
    */
   const shareToSnapchat = () => {
@@ -262,6 +278,19 @@ export default function QRCodeShare({
             </span>
           </button>
 
+          {/* Twitter */}
+          <button
+            onClick={shareToTwitter}
+            className="px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors text-sm"
+          >
+            <span className="flex items-center gap-1">
+              <svg className="h-4 w-4" viewBox="0 0 1200 1227" aria-hidden="true">
+                <path d="M361.215 148.635h284.124L600.936 423.41l201.42-274.775h305.11L808.57 579.832l309.316 498.318H829.203L600.936 779.352 365.31 1078.15H60.2l320.83-504.14L82.973 148.636h278.242Zm-48.14 87.22 702.498 844.548h77.764L396.06 235.855h-83.0Z" fill="currentColor"/>
+              </svg>
+              Twitter
+            </span>
+          </button>
+
           {/* Snapchat */}
           <button
             onClick={shareToSnapchat}
@@ -303,9 +332,9 @@ export default function QRCodeShare({
         {hasWebShareAPI === null ? (
           <p>Loading...</p>
         ) : hasWebShareAPI ? (
-          <p>Tap to share to Instagram, LinkedIn, Snapchat, or download</p>
+          <p>Tap to share to Instagram, LinkedIn, Twitter, Snapchat, or download</p>
         ) : (
-          <p>Tap to share to LinkedIn or download the QR code image</p>
+          <p>Tap to share to LinkedIn, Twitter or download the QR code image</p>
         )}
       </div>
     </div>
